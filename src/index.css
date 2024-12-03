@@ -184,16 +184,16 @@ tbody tr:nth-child(odd) {
   width: 100%;
   border-collapse: collapse;
   margin-top: 20px;
+  margin-bottom:20px;
 }
 
 .candidate-table th, .candidate-table td {
   padding: 12px; /* Increased padding for better readability */
   text-align: left;
-  border: 1px solid #ddd;
 }
 
 .candidate-table th {
-  background-color: #333;
+  background-color: black;
   color: white;
 }
 
@@ -220,16 +220,9 @@ tbody tr:nth-child(odd) {
 }
 
 .candidate-table td button {
-  background-color: gray;
-  color: white;
-  border: none;
-  padding: 6px 12px;
-  cursor: pointer;
+  width:40px;
 }
 
-.candidate-table td button:hover {
-  background-color: gray;
-}
 
 /* Style for the bio column */
 .candidate-table td {

@@ -30,7 +30,6 @@ const SavedCandidates = () => {
           <thead>
             <tr>
               <th>Avatar</th>
-              <th>Name</th>
               <th>Username</th>
               <th>Location</th>
               <th>Company</th>
@@ -46,7 +45,6 @@ const SavedCandidates = () => {
                 <td>
                   <img src={candidate.avatar_url} alt={candidate.login} width="50" height="50" />
                 </td>
-                <td>{candidate.name || 'No name available'}</td>
                 <td>{candidate.login}</td>
                 <td>{candidate.location || 'No location provided'}</td>
                 <td>{candidate.company || 'No company information'}</td>
@@ -58,7 +56,7 @@ const SavedCandidates = () => {
                   </a>
                 </td>
                 <td>
-                  <button onClick={() => removeCandidate(candidate.login)}>Remove Candidate</button>
+                  <button onClick={() => removeCandidate(candidate.login)} className='noCandidate'>-</button>
                 </td>
               </tr>
             ))}
