@@ -1,5 +1,5 @@
 // imports
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { Candidate } from '../interfaces/Candidate.interface'; // Ensure this import points to your Candidate interface
 import { searchGithub } from '../api/API'; // The function that fetches data from GitHub API
 
@@ -58,7 +58,7 @@ const CandidateSearch = () => {
   };
 
 
-  
+
   // Handle when no candidates are available
   if (candidates.length === 0) {
     return <p>Loading candidates...</p>;
