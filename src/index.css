@@ -207,7 +207,7 @@ tbody tr:nth-child(odd) {
 }
 
 .candidate-table td img {
-  border-radius: 50%;
+  border-radius: 10px;
 }
 
 .candidate-table td a {
