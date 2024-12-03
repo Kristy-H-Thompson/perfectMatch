@@ -1,10 +1,21 @@
+// imports
 import React, { useState, useEffect } from 'react';
 import { Candidate } from '../interfaces/Candidate.interface'; // Ensure this import points to your Candidate interface
 import { searchGithub } from '../api/API'; // The function that fetches data from GitHub API
 
+/* 
+------------------------------------------------------------------------------------------------------------
+
+  Candidate Search
+
+------------------------------------------------------------------------------------------------------------ 
+*/
+
 const CandidateSearch = () => {
   const [candidates, setCandidates] = useState<Candidate[]>([]);
   const [currentCandidateIndex, setCurrentCandidateIndex] = useState<number>(0);
+
+
 
   // Fetch candidates from the GitHub API
   useEffect(() => {
@@ -15,12 +26,16 @@ const CandidateSearch = () => {
     fetchCandidates();
   }, []);
 
+
+
   // Function to save a candidate to localStorage
   const handleSaveCandidate = (candidate: Candidate) => {
     const savedCandidates = JSON.parse(localStorage.getItem('savedCandidates') || '[]');
     savedCandidates.push(candidate);
     localStorage.setItem('savedCandidates', JSON.stringify(savedCandidates));
   };
+
+
 
   // Function to move to the next candidate
   const handleNextCandidate = () => {
@@ -31,6 +46,8 @@ const CandidateSearch = () => {
     }
   };
 
+
+
   // Function to move to the next candidate without saving (for the "-" button)
   const handleNoCandidate = () => {
     if (currentCandidateIndex < candidates.length - 1) {
@@ -40,6 +57,8 @@ const CandidateSearch = () => {
     }
   };
 
+
+  
   // Handle when no candidates are available
   if (candidates.length === 0) {
     return <p>Loading candidates...</p>;
