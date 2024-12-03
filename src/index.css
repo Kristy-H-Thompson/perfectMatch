@@ -1,0 +1,259 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter+Tight:ital,wght@0,100..900;1,100..900&display=swap');
+
+:root {
+  font-family: 'Inter Tight', system-ui, Avenir, Helvetica, Arial, sans-serif;
+  line-height: 1.5;
+  font-weight: 400;
+  color-scheme: light dark;
+  color: rgba(255, 255, 255, 0.87);
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  min-width: 100vw;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+a {
+  font-weight: 500;
+  color: #646cff;
+  text-decoration: inherit;
+}
+a:hover {
+  color: #535bf2;
+}
+
+body {
+  background: linear-gradient(
+    180deg,
+    rgb(32, 44, 136) 0%,
+    rgba(9, 9, 121, 1) 15%,
+    rgba(0, 2, 18, 1) 100%
+  );
+  background-size: cover;
+  background-repeat: no-repeat no-repeat;
+  background-position: center center;
+  margin: 0;
+  padding: 0;
+  min-width: 320px;
+  min-height: 100vh;
+}
+
+h1 {
+  font-size: 3em;
+  line-height: 1.1;
+}
+
+button {
+  border-radius: 8px;
+  border: 1px solid transparent;
+  padding: 0.6em 1.2em;
+  font-size: 1em;
+  font-weight: 500;
+  font-family: inherit;
+  background-color: #1a1a1a;
+  cursor: pointer;
+  transition: border-color 0.25s;
+}
+button:hover {
+  border-color: #646cff;
+}
+button:focus,
+button:focus-visible {
+  outline: 4px auto -webkit-focus-ring-color;
+}
+
+@media (prefers-color-scheme: light) {
+  :root {
+    color: #213547;
+    background-color: #ffffff;
+  }
+  a:hover {
+    color: #747bff;
+  }
+  button {
+    background-color: #f9f9f9;
+  }
+}
+
+main {
+  color: #fff;
+  width: 100%;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+tr {
+  border-radius: 10px;
+  background-color: #000;
+  color: white;
+}
+
+tbody tr:nth-child(odd) {
+  background-color: #333333;
+}
+
+.nav {
+  display: flex;
+  justify-content: flex-start;
+  padding: 1em 2em;
+}
+
+.nav-item {
+  padding: 0 0.5rem;
+  list-style: none;
+}
+
+.nav-link {
+  color: #fff;
+  text-decoration: none;
+}
+
+.active {
+  font-weight: 700;
+}
+
+.table {
+  width: 80vw;
+  table-layout: fixed;
+}
+
+.candidate-card img {
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
+  margin-bottom:-1rem;
+  max-height:200px;
+  max-width:250px;
+  width:100%;
+}
+
+.candidate-box {
+  background-color: #000;
+  border-bottom-left-radius: 10px;
+  border-bottom-right-radius: 10px;
+  box-sizing: border-box;
+  margin-top:0px;
+  max-width:250px;
+  padding:.9rem;
+}
+
+.noCandidate {
+  aspect-ratio: 1/1;
+  background-color: red;
+  color: black;
+  font-size: 1.5rem;
+  font-weight: 500;
+  border-radius: 100%;
+  transition: all 0.3s ease; /* Smooth transition for the glow effect */
+}
+
+.noCandidate:hover {
+  background-color: #ff4d4d; /* Lighter red for hover effect */
+  box-shadow: 0 0 10px 5px rgba(255, 0, 0, 0.8); /* Red glow effect */
+  transform: scale(1.1); /* Slightly enlarge the button on hover */
+}
+
+.yesCandidate {
+  aspect-ratio: 1/1;
+  background-color: green;
+  color: black;
+  font-size: 1.5rem;
+  border-radius: 100%;
+  transition: all 0.3s ease; /* Smooth transition for the glow effect */
+}
+
+.yesCandidate:hover {
+  background-color: #4dff4d; /* Lighter green for hover effect */
+  box-shadow: 0 0 10px 5px rgba(0, 255, 0, 0.8); /* Green glow effect */
+  transform: scale(1.1); /* Slightly enlarge the button on hover */
+}
+
+.buttons{
+  display:flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap:2rem;
+  font-weight: 500;
+  max-width:250px;
+  padding: .5rem;
+}
+
+/* Add this CSS in your global stylesheet or within a CSS module */
+.candidate-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
+}
+
+.candidate-table th, .candidate-table td {
+  padding: 12px; /* Increased padding for better readability */
+  text-align: left;
+  border: 1px solid #ddd;
+}
+
+.candidate-table th {
+  background-color: #333;
+  color: white;
+}
+
+.candidate-table tr.even {
+  background-color: #2b2929; /* Light gray */
+}
+
+.candidate-table tr.odd {
+  background-color: #000; /* Black */
+  color: white; /* Ensure text is readable */
+}
+
+.candidate-table td img {
+  border-radius: 50%;
+}
+
+.candidate-table td a {
+  color: #007bff;
+  text-decoration: none;
+}
+
+.candidate-table td a:hover {
+  text-decoration: underline;
+}
+
+.candidate-table td button {
+  background-color: gray;
+  color: white;
+  border: none;
+  padding: 6px 12px;
+  cursor: pointer;
+}
+
+.candidate-table td button:hover {
+  background-color: gray;
+}
+
+/* Style for the bio column */
+.candidate-table td {
+  word-wrap: break-word; /* Ensure long bios wrap to the next line */
+}
+
+.candidate-table td.bio {
+  max-width: 200px; /* Optional: limit the width of the bio column */
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Ensure the table is responsive */
+@media (max-width: 768px) {
+  .candidate-table {
+    font-size: 14px;
+  }
+
+  .candidate-table th, .candidate-table td {
+    padding: 8px;
+  }
+
+  /* Adjust bio column for small screens */
+  .candidate-table td.bio {
+    max-width: 150px;
+  }
+}
