@@ -1,13 +1,23 @@
-// src/pages/SavedCandidates.tsx
+// imports
 import React, { useEffect, useState } from 'react';
 import { Candidate } from '../interfaces/Candidate.interface';
 
+
+/* 
+------------------------------------------------------------------------------------------------------------
+
+  SAVED CANDIDATES
+
+------------------------------------------------------------------------------------------------------------ 
+*/
 const SavedCandidates: React.FC = () => {
   const [savedCandidates, setSavedCandidates] = useState<Candidate[]>([]);
   const [sortCriteria, setSortCriteria] = useState<keyof Candidate>('login'); // Ensuring sortCriteria is one of Candidate's keys
   const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('asc');
 
-  // Fetch saved candidates from localStorage
+
+
+// Fetch saved candidates from localStorage
   useEffect(() => {
     const storedCandidates = localStorage.getItem('savedCandidates');
     if (storedCandidates) {
@@ -15,17 +25,21 @@ const SavedCandidates: React.FC = () => {
     }
   }, []);
 
-  // Function to handle removing a candidate
+
+
+// Function to handle removing a candidate
   const removeCandidate = (login: string) => {
     const updatedCandidates = savedCandidates.filter(candidate => candidate.login !== login);
     setSavedCandidates(updatedCandidates);
     localStorage.setItem('savedCandidates', JSON.stringify(updatedCandidates));
   };
 
-  // Function to handle sorting candidates based on criteria
+
+
+// Function to handle sorting candidates based on criteria
   const sortCandidates = (candidates: Candidate[]): Candidate[] => {
     const sortedCandidates = [...candidates].sort((a, b) => {
-      const aValue = a[sortCriteria] || ''; // TypeScript ensures safe property access
+      const aValue = a[sortCriteria] || ''; 
       const bValue = b[sortCriteria] || '';
       
       if (aValue < bValue) return sortOrder === 'asc' ? -1 : 1;
@@ -36,7 +50,8 @@ const SavedCandidates: React.FC = () => {
     return sortedCandidates;
   };
 
-  // Handle change in sorting criteria
+
+// Handle change in sorting criteria
   const handleSortChange = (criteria: keyof Candidate) => {
     const newOrder = sortCriteria === criteria && sortOrder === 'asc' ? 'desc' : 'asc';
     setSortCriteria(criteria);
