@@ -45,7 +45,9 @@ const SavedCandidates = () => {
                 <td>
                   <img src={candidate.avatar_url} alt={candidate.login} width="50" height="50" />
                 </td>
-                <td>{candidate.login}</td>
+                <td><b>{candidate.login}</b><br/>
+                ({candidate.name || 'No name provided'})
+                </td>
                 <td>{candidate.location || 'No location provided'}</td>
                 <td>{candidate.company || 'No company information'}</td>
                 <td>{candidate.email || 'No email available'}</td>
