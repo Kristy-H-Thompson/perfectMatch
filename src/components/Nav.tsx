@@ -1,5 +1,5 @@
   // TODO: Add necessary code to display the navigation bar and link between the pages
-  import React, { useState } from 'react';
+  import { useState } from 'react';
   import { Link } from 'react-router-dom';
   import './nav.css';
   
