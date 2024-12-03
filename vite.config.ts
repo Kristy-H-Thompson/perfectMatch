@@ -5,8 +5,8 @@ import react from '@vitejs/plugin-react';
 export default defineConfig({
   envDir: './',
   server: {
-    port: process.env.PORT ? parseInt(process.env.PORT) : 3000, // Port should be inside 'server'
-    host: '0.0.0.0', // Bind to all network interfaces (required for cloud environments like Render)
+    port: process.env.PORT ? parseInt(process.env.PORT) : 3000, // Use PORT environment variable, fallback to 3000
+    host: '0.0.0.0', // Make sure to bind the server to all network interfaces (important for cloud services)
   },
   plugins: [react()],
 });
