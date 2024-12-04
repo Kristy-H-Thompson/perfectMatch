@@ -1,12 +1,10 @@
 import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
 
-// https://vitejs.dev/config/
+// Vite config for static sites
 export default defineConfig({
-  envDir: './',
-  server: {
-    port: process.env.PORT ? parseInt(process.env.PORT) : 3000, // Use PORT environment variable, fallback to 3000
-    host: '0.0.0.0', // Make sure to bind the server to all network interfaces (important for cloud services)
+  build: {
+    outDir: 'dist', // This is the default folder for static build output
   },
   plugins: [react()],
 });
