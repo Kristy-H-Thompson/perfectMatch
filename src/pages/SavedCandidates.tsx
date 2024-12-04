@@ -1,7 +1,5 @@
-// imports
 import { useEffect, useState } from 'react';
 import { Candidate } from '../interfaces/Candidate.interface';
-
 
 /* 
 ------------------------------------------------------------------------------------------------------------
@@ -12,46 +10,42 @@ import { Candidate } from '../interfaces/Candidate.interface';
 */
 const SavedCandidates: React.FC = () => {
   const [savedCandidates, setSavedCandidates] = useState<Candidate[]>([]);
-  const [sortCriteria, setSortCriteria] = useState<keyof Candidate>('login'); // Ensuring sortCriteria is one of Candidate's keys
+  const [sortCriteria, setSortCriteria] = useState<keyof Candidate>('login'); // Default sort by login
   const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('asc');
 
-
-
-// Fetch saved candidates from localStorage
+  // Fetch saved candidates from localStorage
   useEffect(() => {
     const storedCandidates = localStorage.getItem('savedCandidates');
     if (storedCandidates) {
-      setSavedCandidates(JSON.parse(storedCandidates));
+      try {
+        setSavedCandidates(JSON.parse(storedCandidates));
+      } catch (error) {
+        console.error("Error parsing saved candidates from localStorage", error);
+      }
     }
   }, []);
 
-
-
-// Function to handle removing a candidate
+  // Function to handle removing a candidate
   const removeCandidate = (login: string) => {
     const updatedCandidates = savedCandidates.filter(candidate => candidate.login !== login);
     setSavedCandidates(updatedCandidates);
     localStorage.setItem('savedCandidates', JSON.stringify(updatedCandidates));
   };
 
-
-
-// Function to handle sorting candidates based on criteria
+  // Function to handle sorting candidates based on criteria
   const sortCandidates = (candidates: Candidate[]): Candidate[] => {
-    const sortedCandidates = [...candidates].sort((a, b) => {
-      const aValue = a[sortCriteria] || ''; 
-      const bValue = b[sortCriteria] || '';
-      
-      if (aValue < bValue) return sortOrder === 'asc' ? -1 : 1;
-      if (aValue > bValue) return sortOrder === 'asc' ? 1 : -1;
-      return 0;
-    });
+    return [...candidates].sort((a, b) => {
+      const aValue = a[sortCriteria] ?? ''; // Using empty string as fallback
+      const bValue = b[sortCriteria] ?? ''; // Using empty string as fallback
 
-    return sortedCandidates;
+      if (typeof aValue === 'string' && typeof bValue === 'string') {
+        return aValue.localeCompare(bValue) * (sortOrder === 'asc' ? 1 : -1);
+      }
+      return 0; // No sorting for non-string values, can be adjusted based on type
+    });
   };
 
-
-// Handle change in sorting criteria
+  // Handle change in sorting criteria
   const handleSortChange = (criteria: keyof Candidate) => {
     const newOrder = sortCriteria === criteria && sortOrder === 'asc' ? 'desc' : 'asc';
     setSortCriteria(criteria);
@@ -78,6 +72,7 @@ const SavedCandidates: React.FC = () => {
               Sort by Company {sortCriteria === 'company' ? (sortOrder === 'asc' ? '↓' : '↑') : ''}
             </button>
           </div>
+
           <table className="candidate-table">
             <thead>
               <tr>

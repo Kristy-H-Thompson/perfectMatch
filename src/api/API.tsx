@@ -1,8 +1,6 @@
 const searchGithub = async () => {
   try {
     const start = Math.floor(Math.random() * 100000000) + 1;
-    const githubToken = import.meta.env.VITE_GITHUB_TOKEN;
-    console.log(githubToken, "githubtoken"); 
     const response = await fetch(
       `https://api.github.com/users?since=${start}`,
       {
@@ -11,15 +9,23 @@ const searchGithub = async () => {
         },
       }
     );
-     console.log('Response:', response);
-    const data = await response.json();
     if (!response.ok) {
-      throw new Error('invalid API response, check the network tab');
+      throw new Error('Invalid API response, check the network tab');
     }
-     console.log('Data:', data);
-    return data;
+
+    const data = await response.json();
+    console.log('Data:', data);
+
+    // Only return necessary information from the list of users
+    const users = data.map((user: any) => ({
+      login: user.login,
+      avatar_url: user.avatar_url,
+      html_url: user.html_url,
+    }));
+
+    return users;
   } catch (err) {
-     console.log('an error occurred', err);
+    console.log('An error occurred:', err);
     return [];
   }
 };
@@ -31,13 +37,29 @@ const searchGithubUser = async (username: string) => {
         Authorization: `Bearer ${import.meta.env.VITE_GITHUB_TOKEN}`,
       },
     });
-    const data = await response.json();
+
     if (!response.ok) {
-      throw new Error('invalid API response, check the network tab');
+      throw new Error('Invalid API response, check the network tab');
     }
-    return data;
+
+    const data = await response.json();
+    console.log('User Data:', data);
+
+    // Return the user data including bio, name, and company
+    const user = {
+      login: data.login,
+      avatar_url: data.avatar_url,
+      name: data.name || 'No name provided', // Default to "No name provided" if not available
+      company: data.company || 'No company information', // Default if no company is provided
+      bio: data.bio || 'No bio available', // Default if no bio is available
+      location: data.location || 'No location available', // Optional, fallback if location is missing
+      email: data.email || 'No email available', // Optional, fallback if email is missing
+      html_url: data.html_url,
+    };
+
+    return user;
   } catch (err) {
-     console.log('an error occurred', err);
+    console.log('An error occurred:', err);
     return {};
   }
 };
