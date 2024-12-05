@@ -14,21 +14,23 @@ const searchGithub = async () => {
     }
 
     const data = await response.json();
-    console.log('Data:', data);
+    console.log('Full Data:', data);  // Log the full response to check structure
 
-    // Only return necessary information from the list of users
-    const users = data.map((user: any) => ({
-      login: user.login,
-      avatar_url: user.avatar_url,
-      html_url: user.html_url,
-      name: user.name || 'No name provided', // Add name
-      company: user.company || 'No company information', // Add company
-      bio: user.bio || 'No bio available', // Add bio
-      location: user.location || 'No location available', // Add location
-      email: user.email || 'No email available', // Add email
-    }));
+    const users = data.map((user: any) => {
+      console.log('User Data:', user);  // Log each user for debugging
+      return {
+        login: user.login,
+        avatar_url: user.avatar_url,
+        html_url: user.html_url,
+        name: user.name || 'No name provided',
+        company: user.company || 'No company information',
+        bio: user.bio || 'No bio available',
+        location: user.location || 'No location available',
+        email: user.email || 'No email available',
+      };
+    });
 
-    console.log("users", users);
+    console.log('Processed Users:', users);
     return users;
   } catch (err) {
     console.log('An error occurred:', err);
