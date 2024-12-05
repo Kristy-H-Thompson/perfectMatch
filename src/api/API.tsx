@@ -21,8 +21,14 @@ const searchGithub = async () => {
       login: user.login,
       avatar_url: user.avatar_url,
       html_url: user.html_url,
+      name: user.name || 'No name provided', // Add name
+      company: user.company || 'No company information', // Add company
+      bio: user.bio || 'No bio available', // Add bio
+      location: user.location || 'No location available', // Add location
+      email: user.email || 'No email available', // Add email
     }));
 
+    
     return users;
   } catch (err) {
     console.log('An error occurred:', err);
