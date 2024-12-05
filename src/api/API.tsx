@@ -49,7 +49,7 @@ const searchGithubUser = async (username: string) => {
     const user = {
       login: data.login,
       avatar_url: data.avatar_url,
-      name: data.name || 'No name provided', // Default to "No name provided" if not available
+      name: data.name || 'No name provided', // Default if no name is provided
       company: data.company || 'No company information', // Default if no company is provided
       bio: data.bio || 'No bio available', // Default if no bio is available
       location: data.location || 'No location available', // Optional, fallback if location is missing
