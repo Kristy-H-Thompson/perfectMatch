@@ -28,7 +28,7 @@ const searchGithub = async () => {
       email: user.email || 'No email available', // Add email
     }));
 
-    
+    console.log("users", users);
     return users;
   } catch (err) {
     console.log('An error occurred:', err);
