@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { Candidate } from '../interfaces/Candidate.interface'; // Ensure this import points to your Candidate interface
-import { searchGithub } from '../api/API'; // The function that fetches data from GitHub API
+import { searchGithub, searchGithubUser } from '../api/API'; // Import both functions from API
 
 /* 
 ------------------------------------------------------------------------------------------------------------
@@ -13,15 +13,35 @@ import { searchGithub } from '../api/API'; // The function that fetches data fro
 const CandidateSearch = () => {
   const [candidates, setCandidates] = useState<Candidate[]>([]);
   const [currentCandidateIndex, setCurrentCandidateIndex] = useState<number>(0);
+  const [loading, setLoading] = useState<boolean>(true);
 
   // Fetch candidates from the GitHub API
   useEffect(() => {
     const fetchCandidates = async () => {
-      const data = await searchGithub();
-      setCandidates(data);
+      try {
+        const data = await searchGithub();
+        console.log("Fetched Candidates:", data); // Log fetched data to verify
+        setCandidates(data);
+        setLoading(false);
+      } catch (error) {
+        console.error("Error fetching candidates:", error);
+        setLoading(false);
+      }
     };
     fetchCandidates();
   }, []);
+
+  // Fetch additional details (like bio, company) for a specific user
+  const fetchCandidateDetails = async (username: string) => {
+    try {
+      const userDetails = await searchGithubUser(username);
+      console.log("Fetched User Details:", userDetails); // Log fetched details for each user
+      return userDetails;
+    } catch (error) {
+      console.error(`Error fetching details for ${username}:`, error);
+      return {}; // Return an empty object if there's an error
+    }
+  };
 
   // Function to save a candidate to localStorage
   const handleSaveCandidate = (candidate: Candidate) => {
@@ -49,7 +69,7 @@ const CandidateSearch = () => {
   };
 
   // Handle when no candidates are available
-  if (candidates.length === 0) {
+  if (loading) {
     return <p>Loading candidates...</p>;
   }
 
@@ -59,6 +79,16 @@ const CandidateSearch = () => {
   if (!currentCandidate) {
     return <p>Candidate not found. Please try again later.</p>;
   }
+
+  // Fetch additional candidate details if needed (bio, company, etc.)
+  const loadCandidateDetails = async () => {
+    const userDetails = await fetchCandidateDetails(currentCandidate.login);
+    // Update current candidate details with additional information
+    return {
+      ...currentCandidate,
+      ...userDetails,
+    };
+  };
 
   return (
     <div className="candidate-search">
