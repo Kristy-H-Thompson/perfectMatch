@@ -33,6 +33,7 @@ const CandidateSearch = () => {
 
   // Fetch additional details (like bio, company) for a specific user
   const fetchCandidateDetails = async (username: string) => {
+    console.log("USERNAME", username)
     try {
       const userDetails = await searchGithubUser(username);
       console.log("Fetched User Details:", userDetails); // Log fetched details for each user
@@ -82,6 +83,7 @@ const CandidateSearch = () => {
 
   // Fetch additional candidate details if needed (bio, company, etc.)
   const loadCandidateDetails = async () => {
+    console.log("TESTING")
     const userDetails = await fetchCandidateDetails(currentCandidate.login);
     // Merge the fetched details with the current candidate
     const updatedCandidate = {
