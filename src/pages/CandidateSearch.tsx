@@ -83,7 +83,6 @@ const CandidateSearch = () => {
 
   // Fetch additional candidate details if needed (bio, company, etc.)
   const loadCandidateDetails = async () => {
-    console.log("TESTING")
     const userDetails = await fetchCandidateDetails(currentCandidate.login);
     // Merge the fetched details with the current candidate
     const updatedCandidate = {
