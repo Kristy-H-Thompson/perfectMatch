@@ -83,30 +83,50 @@ const CandidateSearch = () => {
   // Fetch additional candidate details if needed (bio, company, etc.)
   const loadCandidateDetails = async () => {
     const userDetails = await fetchCandidateDetails(currentCandidate.login);
-    // Update current candidate details with additional information
-    return {
+    // Merge the fetched details with the current candidate
+    const updatedCandidate = {
       ...currentCandidate,
-      ...userDetails,
+      ...userDetails, // Spread user details into the current candidate object
     };
+    return updatedCandidate;
   };
+
+  const [currentCandidateDetails, setCurrentCandidateDetails] = useState<Candidate | null>(null);
+
+  // Effect hook to load details when a new candidate is selected
+  useEffect(() => {
+    const loadDetails = async () => {
+      const updatedCandidate = await loadCandidateDetails();
+      setCurrentCandidateDetails(updatedCandidate);
+    };
+
+    if (currentCandidate) {
+      loadDetails();
+    }
+  }, [currentCandidate]);
+
+  // If currentCandidateDetails is not loaded, display loading
+  if (!currentCandidateDetails) {
+    return <p>Loading candidate details...</p>;
+  }
 
   return (
     <div className="candidate-search">
       <h2>Candidate Search</h2>
       <div className="candidate-card">
         <img
-          src={currentCandidate?.avatar_url ?? 'default-avatar-url'}
-          alt={currentCandidate?.login ?? 'No login available'}
+          src={currentCandidateDetails?.avatar_url ?? 'default-avatar-url'}
+          alt={currentCandidateDetails?.login ?? 'No login available'}
           width="150"
         />
         <div className="candidate-box">
-          <h2>{currentCandidate?.name ?? 'No name available'}</h2>
-          <p>Username: {currentCandidate?.login ?? 'No login available'}</p>
-          <p>Location: {currentCandidate?.location ?? 'No location provided'}</p>
-          <p>Company: {currentCandidate?.company ?? 'No company information'}</p>
-          <p>Email: {currentCandidate?.email ?? 'No email available'}</p>
-          <p>Bio: {currentCandidate?.bio ?? 'No bio available'}</p>
-          <a href={currentCandidate?.html_url} target="_blank" rel="noopener noreferrer">
+          <h2>{currentCandidateDetails?.name ?? 'No name available'}</h2>
+          <p>Username: {currentCandidateDetails?.login ?? 'No login available'}</p>
+          <p>Location: {currentCandidateDetails?.location ?? 'No location provided'}</p>
+          <p>Company: {currentCandidateDetails?.company ?? 'No company information'}</p>
+          <p>Email: {currentCandidateDetails?.email ?? 'No email available'}</p>
+          <p>Bio: {currentCandidateDetails?.bio ?? 'No bio available'}</p>
+          <a href={currentCandidateDetails?.html_url} target="_blank" rel="noopener noreferrer">
             View Profile
           </a>
         </div>
@@ -118,7 +138,7 @@ const CandidateSearch = () => {
           {/* "+" button: Save the current candidate and move to the next */}
           <button
             onClick={() => {
-              handleSaveCandidate(currentCandidate);
+              handleSaveCandidate(currentCandidateDetails);
               handleNextCandidate();
             }}
             className="yesCandidate"
