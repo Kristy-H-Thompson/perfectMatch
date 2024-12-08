@@ -14,13 +14,14 @@ const CandidateSearch = () => {
   const [candidates, setCandidates] = useState<Candidate[]>([]);
   const [currentCandidateIndex, setCurrentCandidateIndex] = useState<number>(0);
   const [loading, setLoading] = useState<boolean>(true);
+  const [currentCandidateDetails, setCurrentCandidateDetails] = useState<Candidate | null>(null);
 
   // Fetch candidates from the GitHub API
   useEffect(() => {
     const fetchCandidates = async () => {
       try {
         const data = await searchGithub();
-        console.log("Fetched Candidates:", data); // Log fetched data to verify
+        console.log("Fetched Candidates:", data);
         setCandidates(data);
         setLoading(false);
       } catch (error) {
@@ -33,14 +34,13 @@ const CandidateSearch = () => {
 
   // Fetch additional details (like bio, company) for a specific user
   const fetchCandidateDetails = async (username: string) => {
-    console.log("USERNAME", username)
     try {
       const userDetails = await searchGithubUser(username);
-      console.log("Fetched User Details:", userDetails); // Log fetched details for each user
+      console.log("Fetched User Details:", userDetails);
       return userDetails;
     } catch (error) {
       console.error(`Error fetching details for ${username}:`, error);
-      return {}; // Return an empty object if there's an error
+      return null; // return null for error handling
     }
   };
 
@@ -52,62 +52,37 @@ const CandidateSearch = () => {
   };
 
   // Function to move to the next candidate
-  const handleNextCandidate = () => {
+  const handleNext = (save: boolean) => {
     if (currentCandidateIndex < candidates.length - 1) {
+      if (save && currentCandidateDetails) handleSaveCandidate(currentCandidateDetails);
       setCurrentCandidateIndex(currentCandidateIndex + 1);
     } else {
       alert("No more candidates available.");
     }
   };
 
-  // Function to move to the next candidate without saving (for the "-" button)
-  const handleNoCandidate = () => {
-    if (currentCandidateIndex < candidates.length - 1) {
-      setCurrentCandidateIndex(currentCandidateIndex + 1);
-    } else {
-      alert("No more candidates available.");
-    }
-  };
-
-  // Handle when no candidates are available
-  if (loading) {
-    return <p>Loading candidates...</p>;
-  }
-
-  const currentCandidate = candidates[currentCandidateIndex];
-
-  // Handle the case where currentCandidate is undefined
-  if (!currentCandidate) {
-    return <p>Candidate not found. Please try again later.</p>;
-  }
-
-  // Fetch additional candidate details if needed (bio, company, etc.)
+  // Load additional candidate details (bio, company, etc.)
   const loadCandidateDetails = async () => {
-    const userDetails = await fetchCandidateDetails(currentCandidate.login);
-    // Merge the fetched details with the current candidate
-    const updatedCandidate = {
-      ...currentCandidate,
-      ...userDetails, // Spread user details into the current candidate object
-    };
-    return updatedCandidate;
+    if (!currentCandidate) return;
+    const userDetails = await fetchCandidateDetails(currentCandidate?.login);
+    if (userDetails) {
+      const updatedCandidate = { ...currentCandidate, ...userDetails };
+      setCurrentCandidateDetails(updatedCandidate);
+    }
   };
 
-  const [currentCandidateDetails, setCurrentCandidateDetails] = useState<Candidate | null>(null);
+  // Ensure currentCandidate is assigned before being accessed
+  const currentCandidate = candidates[currentCandidateIndex];
 
   // Effect hook to load details when a new candidate is selected
   useEffect(() => {
-    const loadDetails = async () => {
-      const updatedCandidate = await loadCandidateDetails();
-      setCurrentCandidateDetails(updatedCandidate);
-    };
-
     if (currentCandidate) {
-      loadDetails();
+      loadCandidateDetails();
     }
   }, [currentCandidate]);
 
-  // If currentCandidateDetails is not loaded, display loading
-  if (!currentCandidateDetails) {
+  // Handle loading state and empty candidate details
+  if (loading || !currentCandidateDetails) {
     return <p>Loading candidate details...</p>;
   }
 
@@ -133,17 +108,11 @@ const CandidateSearch = () => {
         </div>
         <div className="buttons">
           {/* "-" button: Move to the next candidate without saving */}
-          <button onClick={handleNoCandidate} disabled={currentCandidateIndex === 0} className="noCandidate">
+          <button onClick={() => handleNext(false)} disabled={currentCandidateIndex === 0} className="noCandidate">
             -
           </button>
           {/* "+" button: Save the current candidate and move to the next */}
-          <button
-            onClick={() => {
-              handleSaveCandidate(currentCandidateDetails);
-              handleNextCandidate();
-            }}
-            className="yesCandidate"
-          >
+          <button onClick={() => handleNext(true)} className="yesCandidate">
             +
           </button>
         </div>
