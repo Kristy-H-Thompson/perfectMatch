@@ -108,7 +108,7 @@ const CandidateSearch = () => {
         </div>
         <div className="buttons">
           {/* "-" button: Move to the next candidate without saving */}
-          <button onClick={() => handleNext(false)} disabled={currentCandidateIndex === 0} className="noCandidate">
+          <button onClick={() => handleNext(false)} className="noCandidate">
             -
           </button>
           {/* "+" button: Save the current candidate and move to the next */}
