@@ -17,7 +17,7 @@ This is a candidate search application designed to help you explore GitHub profi
 
 
 ## Link to deployed website
-[Link](https://dashboard.render.com/static/srv-ct7ubc9u0jms73d9a8o0)
+[Link](https://perfectmatch-1.onrender.com/)
 
 ## Table of Contents (Optional)
 - [Installation](#installation)
